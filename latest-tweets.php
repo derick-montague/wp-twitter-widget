@@ -138,8 +138,24 @@ function latest_tweets_render( $screen_name, $count, $rts, $ats, $pop = 0 ){
             }
             // piece together the whole tweet, allowing override
             $final = apply_filters('latest_tweets_render_tweet', $html, $date, $link, $tweet );
+            $tweet_id = $tweet['id_str'];
+
             if( $final === $html ){
                 $final = '<p class="tweet-text">'.$html.'</p>'.
+                         '<p class="tweet-actions">
+                            <a href="http://twitter.com/intent/tweet?in_reply_to='.$tweet_id.'" target="_blank">
+                                <i class="icon-undo2"></i>
+                                <span>Reply</span>
+                            </a>
+                            <a href="http://twitter.com/intent/retweet?tweet_id='.$tweet_id.'" target="_blank">
+                                <i class="icon-loop"></i>
+                                <span>Retweet</span>
+                            </a>
+                            <a href="http://twitter.com/intent/favorite?tweet_id='.$tweet_id.'" target="_blank">
+                                <i class="icon-star-full">  </i>
+                                <span>Favorite</span>
+                            </a>
+                          </p>'.
                          '<p class="tweet-details"><a href="'.$link.'" target="_blank">'.$date.'</a></p>';
             }
             $rendered[] = $final;
@@ -155,7 +171,8 @@ function latest_tweets_render( $screen_name, $count, $rts, $ats, $pop = 0 ){
         return $rendered;
     }
     catch( Exception $Ex ){
-        return array( '<p class="tweet-text"><strong>Error:</strong> '.esc_html($Ex->getMessage()).'</p>' );
+        // return array( '<p class="tweet-text"><strong>Error:</strong> '.esc_html($Ex->getMessage()).'</p>' );
+        return array( '<p class="tweet-text">Please be patient as we find our tweets!</p>' );
     }
 } 
 
@@ -173,7 +190,7 @@ function latest_tweets_render_html( $screen_name = '', $num = 5, $rts = true, $a
     $items = latest_tweets_render( $screen_name, $num, $rts, $ats, $pop );
     $list  = apply_filters('latest_tweets_render_list', $items, $screen_name );
     if( is_array($list) ){
-        $list = '<ul><li>'.implode('</li><li>',$items).'</li></ul>';
+        $list = '<ul class="latest-tweets-items"><li class="latest-tweets-item">'.implode('</li><li class="latest-tweets-item">',$items).'</li></ul>';
     }
     return 
         '<div class="latest-tweets">'. 
@@ -276,7 +293,7 @@ class Latest_Tweets_Widget extends WP_Widget {
         $items = latest_tweets_render( $screen_name, $num, $rts, $ats, $pop );
         $list  = apply_filters('latest_tweets_render_list', $items, $screen_name );
         if( is_array($list) ){
-            $list = '<ul><li>'.implode('</li><li>',$items).'</li></ul>';
+            $list = '<ul class="latest-tweets-items"><li class="latest-tweets-item">'.implode('</li><li class="latest-tweets-item">',$items).'</li></ul>';
         }
         // output widget applying filters to each element
         echo 
