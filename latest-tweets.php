@@ -3,7 +3,7 @@
 Plugin Name: Latest Tweets Widget
 Plugin URI: http://wordpress.org/extend/plugins/latest-tweets-widget/
 Description: Provides a sidebar widget showing latest tweets - compatible with the new Twitter API 1.1
-Author: Tim Whitlock
+Author: Tim Whitlock with slight tweeks from Derick Montague
 Version: 1.1.4
 Author URI: http://timwhitlock.info/
 Text Domain: twitter-api
